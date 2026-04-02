@@ -377,7 +377,13 @@ export async function preflightDiscordMessage(
 
   const allowBotsSetting = params.discordConfig?.allowBots;
   const allowBotsMode =
-    allowBotsSetting === "mentions" ? "mentions" : allowBotsSetting === true ? "all" : "off";
+    allowBotsSetting === "watchdog"
+      ? "watchdog"
+      : allowBotsSetting === "mentions"
+        ? "mentions"
+        : allowBotsSetting === true
+          ? "all"
+          : "off";
 
   // Passively populate the directory cache from the message author so that
   // outbound rewriteDiscordKnownMentions() can resolve @name → <@ID> for
@@ -1031,7 +1037,13 @@ export async function preflightDiscordMessage(
   logDebug(
     `[discord-preflight] shouldRequireMention=${shouldRequireMention} baseRequireMention=${shouldRequireMentionByConfig} boundThreadSession=${isBoundThreadSession} mentionDecision.shouldSkip=${mentionDecision.shouldSkip} wasMentioned=${wasMentioned}`,
   );
-  if (isGuildMessage && shouldRequireMention) {
+
+  // Watchdog mode: let all bot messages through (no mention gate).
+  // The [WATCHDOG] prefix is injected in process.ts so the LLM knows this is
+  // a monitoring-only message and can decide whether to respond.
+  const isBotWatchdogMessage = author.bot && !sender.isPluralKit && allowBotsMode === "watchdog";
+
+  if (isGuildMessage && shouldRequireMention && !isBotWatchdogMessage) {
     if (botId && mentionDecision.shouldSkip) {
       logDebug(`[discord-preflight] drop: no-mention`);
       logVerbose(`discord: drop guild message (mention required, botId=${botId})`);

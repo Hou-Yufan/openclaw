@@ -235,7 +235,7 @@ export type DiscordAccountConfig = {
   /** HTTP(S) proxy URL for Discord gateway WebSocket connections. */
   proxy?: string;
   /** Allow bot-authored messages to trigger replies (default: false). Set "mentions" to gate on mentions. */
-  allowBots?: boolean | "mentions";
+  allowBots?: boolean | "mentions" | "watchdog";
   /**
    * Break-glass override: allow mutable identity matching (names/tags/slugs) in allowlists.
    * Default behavior is ID-only matching.

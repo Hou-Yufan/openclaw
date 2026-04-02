@@ -721,6 +721,10 @@ export const GENERATED_BUNDLED_CHANNEL_CONFIG_METADATA = [
               type: "string",
               const: "mentions",
             },
+            {
+              type: "string",
+              const: "watchdog",
+            },
           ],
         },
         dangerouslyAllowNameMatching: {
@@ -1884,6 +1888,10 @@ export const GENERATED_BUNDLED_CHANNEL_CONFIG_METADATA = [
                   {
                     type: "string",
                     const: "mentions",
+                  },
+                  {
+                    type: "string",
+                    const: "watchdog",
                   },
                 ],
               },

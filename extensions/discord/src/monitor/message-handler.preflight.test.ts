@@ -708,6 +708,30 @@ describe("preflightDiscordMessage", () => {
     expect(result?.wasMentioned).toBe(true);
   });
 
+  it("allows bot messages without mention when allowBots=watchdog", async () => {
+    const channelId = "channel-bot-watchdog";
+    const guildId = "guild-bot-watchdog";
+    const message = createDiscordMessage({
+      id: "m-bot-watchdog",
+      channelId,
+      content: "relay chatter no mention",
+      author: {
+        id: "relay-bot-wd",
+        bot: true,
+        username: "Relay",
+      },
+    });
+
+    const result = await runGuildPreflight({
+      channelId,
+      guildId,
+      message,
+      discordConfig: { allowBots: "watchdog" } as DiscordConfig,
+    });
+
+    expect(result).not.toBeNull();
+  });
+
   it("accepts allowlisted guild messages when guild object is missing", async () => {
     const message = createDiscordMessage({
       id: "m-guild-id-only",

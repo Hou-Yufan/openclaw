@@ -322,6 +322,11 @@ export async function processDiscordMessage(
     previousTimestamp,
     envelope: envelopeOptions,
   });
+  // Watchdog mode: prefix bot messages so the LLM knows this is a monitoring-
+  // only inbound message and can decide whether to respond or stay silent.
+  if (author.bot && discordConfig?.allowBots === "watchdog") {
+    combinedBody = `[WATCHDOG] The following is a bot message you are passively monitoring. Only respond if you judge intervention is needed.\n${combinedBody}`;
+  }
   const shouldIncludeChannelHistory =
     !isDirectMessage && !(isGuildMessage && channelConfig?.autoThread && !threadChannel);
   if (shouldIncludeChannelHistory) {

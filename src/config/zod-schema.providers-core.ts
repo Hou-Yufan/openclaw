@@ -512,7 +512,7 @@ export const DiscordAccountSchema = z
     configWrites: z.boolean().optional(),
     token: SecretInputSchema.optional().register(sensitive),
     proxy: z.string().optional(),
-    allowBots: z.union([z.boolean(), z.literal("mentions")]).optional(),
+    allowBots: z.union([z.boolean(), z.literal("mentions"), z.literal("watchdog")]).optional(),
     dangerouslyAllowNameMatching: z.boolean().optional(),
     groupPolicy: GroupPolicySchema.optional().default("allowlist"),
     contextVisibility: ContextVisibilityModeSchema.optional(),
