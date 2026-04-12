@@ -607,7 +607,15 @@ describe("preflightDiscordMessage", () => {
     });
 
     expect(result).toBeNull();
-    expect(guildHistories.get(channelId)?.length).toBeGreaterThan(0);
+    const channelHistory = guildHistories.get(channelId);
+    expect(channelHistory).toBeDefined();
+    expect(channelHistory).toHaveLength(1);
+    expect(channelHistory?.[0]).toEqual(
+      expect.objectContaining({
+        messageId: "m-bot-hist",
+        body: "relay chatter",
+      }),
+    );
   });
 
   it("allows bot messages with explicit mention when allowBots=mentions", async () => {

@@ -824,7 +824,8 @@ export async function runMessageAction(
   input: RunMessageActionParams,
 ): Promise<MessageActionRunResult> {
   // Proxy bootstrap: mirror attempt.ts pattern so outbound channel fetches
-  // (e.g. Discord REST API) respect http_proxy / https_proxy env vars.
+  // (e.g. Discord REST API) respect HTTP_PROXY/HTTPS_PROXY env vars (as well as
+  // lowercase http_proxy/https_proxy and NO_PROXY, if set).
   ensureGlobalUndiciEnvProxyDispatcher();
   const cfg = input.cfg;
   let params = { ...input.params };
